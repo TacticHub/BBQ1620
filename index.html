@@ -396,10 +396,11 @@
 
   /* ── GIFT CODES BANNER ── */
   .gift-banner {
-    background: linear-gradient(90deg, rgba(212,137,26,0.08) 0%, rgba(2,136,209,0.06) 100%);
-    border-bottom: 1px solid rgba(212,137,26,0.25);
+    background: rgba(255, 248, 235, 0.97);
+    border-bottom: 2px solid rgba(212,137,26,0.35);
     position: relative;
     overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
   }
   .gift-banner::before {
     content: '';
@@ -431,14 +432,15 @@
     align-items: center;
     gap: 8px;
     font-family: 'Lato', sans-serif;
-    font-size: 0.72rem;
-    letter-spacing: 0.12em;
+    font-size: 0.85rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
     text-transform: uppercase;
     color: var(--gold);
     white-space: nowrap;
     flex-shrink: 0;
   }
-  .gift-banner-label span { font-size: 1rem; }
+  .gift-banner-label span { font-size: 1.1rem; }
   .gift-codes-row {
     display: flex;
     flex-wrap: wrap;
@@ -456,57 +458,60 @@
     display: flex;
     align-items: center;
     gap: 0;
-    background: rgba(201,168,76,0.1);
-    border: 1px solid rgba(201,168,76,0.3);
-    border-radius: 5px;
+    background: #d4891a;
+    border: 2px solid #b8720f;
+    border-radius: 6px;
     overflow: hidden;
-    transition: border-color 0.2s;
+    transition: border-color 0.2s, box-shadow 0.2s;
     cursor: pointer;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
   }
-  .gift-code-pill:hover { border-color: var(--gold); }
+  .gift-code-pill:hover { border-color: #8a4f00; box-shadow: 0 3px 10px rgba(0,0,0,0.2); }
   .gift-code-text {
     font-family: 'Lato', sans-serif;
-    font-size: 0.7rem;
-    letter-spacing: 0.06em;
-    color: var(--gold-light);
-    padding: 5px 10px;
-    font-weight: 600;
+    font-size: 0.95rem;
+    letter-spacing: 0.08em;
+    color: #ffffff;
+    padding: 7px 13px;
+    font-weight: 700;
   }
   .gift-code-copy {
-    background: rgba(201,168,76,0.15);
+    background: rgba(0,0,0,0.18);
     border: none;
-    border-left: 1px solid rgba(201,168,76,0.2);
-    color: var(--text-muted);
+    border-left: 1px solid rgba(255,255,255,0.25);
+    color: #ffffff;
     cursor: pointer;
-    font-size: 0.7rem;
-    padding: 5px 8px;
+    font-size: 0.85rem;
+    padding: 7px 10px;
     transition: background 0.15s, color 0.15s;
     line-height: 1;
   }
-  .gift-code-copy:hover { background: rgba(201,168,76,0.3); color: var(--gold); }
-  .gift-code-copy.copied { color: var(--green-bright); }
+  .gift-code-copy:hover { background: rgba(0,0,0,0.32); color: #fff; }
+  .gift-code-copy.copied { color: #b8ffb0; }
   .gift-code-expiry {
-    font-family: 'Merriweather', Georgia, serif;
-    font-size: 0.72rem;
-    color: var(--text-muted);
-    padding-right: 8px;
-  }
-  .gift-code-expiry.expiring-soon { color: var(--orange); }
-  .gift-banner-toggle {
-    background: none;
-    border: 1px solid rgba(201,168,76,0.2);
-    border-radius: 4px;
-    color: var(--text-muted);
-    cursor: pointer;
-    font-size: 0.65rem;
     font-family: 'Lato', sans-serif;
-    letter-spacing: 0.08em;
-    padding: 4px 8px;
+    font-size: 0.8rem;
+    color: var(--text-dim);
+    padding-right: 8px;
+    font-weight: 600;
+  }
+  .gift-code-expiry.expiring-soon { color: var(--orange); font-weight: 700; }
+  .gift-banner-toggle {
+    background: rgba(255,255,255,0.7);
+    border: 1px solid rgba(212,137,26,0.4);
+    border-radius: 4px;
+    color: var(--text-dim);
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-family: 'Lato', sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    padding: 5px 10px;
     white-space: nowrap;
     flex-shrink: 0;
-    transition: color 0.2s, border-color 0.2s;
+    transition: color 0.2s, border-color 0.2s, background 0.2s;
   }
-  .gift-banner-toggle:hover { color: var(--gold); border-color: rgba(201,168,76,0.5); }
+  .gift-banner-toggle:hover { color: var(--gold); border-color: var(--gold); background: rgba(255,255,255,0.9); }
   .gift-banner-edit {
     display: none;
     padding: 0 0 14px;
