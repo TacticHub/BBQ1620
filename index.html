@@ -16,9 +16,9 @@
     --dark3: #ffeac8;
     --dark4: #ffe0b0;
     --stone: #d4b896;
-    --text: #2c1a08;
-    --text-dim: #6b4c2a;
-    --text-muted: #9b7a55;
+    --text: #1a0f03;
+    --text-dim: #3d2608;
+    --text-muted: #5c3d1e;
     --green: #2e7d32;
     --green-bright: #43a047;
     --blue: #1565c0;
@@ -41,6 +41,7 @@
     font-size: 17px;
     line-height: 1.7;
     background-image:
+      linear-gradient(rgba(255,250,240,0.72), rgba(255,250,240,0.72)),
       url('https://tactichub.github.io/BBQ1620/Back1.PNG');
     background-attachment: fixed;
     background-position: center top;
@@ -154,7 +155,9 @@
     left: 0;
     width: 260px;
     height: 100%;
-    background: rgba(255,248,235,0.97);
+    background: rgba(255,248,235,0.82);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border-right: 1px solid rgba(212,137,26,0.2);
     z-index: 300;
     display: flex;
@@ -225,9 +228,9 @@
     font-size: 0.55rem;
     letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--text-muted);
+    color: var(--text-dim);
     padding: 14px 20px 4px;
-    opacity: 0.7;
+    opacity: 0.9;
   }
 
   /* Sidebar footer */
@@ -739,6 +742,8 @@
   .it-no-results { text-align: center; color: var(--text-muted); font-style: italic; padding: 20px; display: none; }
   /* ── MAIN CONTENT ── */
   main { padding: 40px 0 60px; background: transparent; }
+  main p, main li, main td { color: var(--text); }
+  .callout p, .callout li { color: var(--text); }
 
   .section-header {
     display: flex;
@@ -798,7 +803,7 @@
   }
   .callout-warn .callout-label { color: var(--orange); }
   .callout-tip .callout-label { color: var(--green-bright); }
-  .callout-info .callout-label { color: var(--blue-bright); }
+  .callout-info .callout-label { color: var(--blue); }
 
   /* ── TIPS LIST ── */
   ul.tips { list-style: none; padding: 0; }
@@ -1254,7 +1259,7 @@
     <a href="#resources"><span class="nav-icon">&#x1F4DA;</span>Community Links</a>
   </div>
 
-  <div class="sidebar-footer">&#x1F3D6;&#xFE0F; BBQ Academy &middot; K#1620</div>
+  <div class="sidebar-footer">&#x1F3D6;&#xFE0F; BBQ Strategy Guide &middot; K#1620</div>
 </nav>
 
 <script>
