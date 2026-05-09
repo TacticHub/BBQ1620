@@ -2806,7 +2806,7 @@ function _giftFetch(path, options) {
 
 function _loadGiftCodes() {
   _giftFetch('/gift-codes')
-    .then(function(data) { _giftCodes = Array.isArray(data) ? data : []; renderGiftCodes(); })
+    .then(function(data) { _giftCodes = Array.isArray(data) ? data : (Array.isArray(data.codes) ? data.codes : []); renderGiftCodes(); })
     .catch(function()    { _giftCodes = []; renderGiftCodes(); });
 }
 
