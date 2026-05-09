@@ -2412,9 +2412,9 @@
     }
     row.innerHTML = active.map(function(x) {
       var exp = x.expiry ? ' <span style="font-size:0.75rem;color:var(--text-muted);">exp ' + x.expiry + '</span>' : '';
-      return '<span class="gift-code-pill" onclick="gcCopyCode('' + esc(x.code) + '')" style="cursor:pointer;">'
+      return '<span class="gift-code-pill" onclick="gcCopyCode(\'' + esc(x.code) + '\')" style="cursor:pointer;">'
         + '<span class="gift-code-text">' + escHtml(x.code) + '</span>'
-        + '<button class="gift-code-copy" onclick="event.stopPropagation();gcCopyCode('' + esc(x.code) + '')">&#x1F4CB;</button>'
+        + '<button class="gift-code-copy" onclick="event.stopPropagation();gcCopyCode(\'' + esc(x.code) + '\')">&#x1F4CB;</button>'
         + '</span>' + exp;
     }).join('');
   }
