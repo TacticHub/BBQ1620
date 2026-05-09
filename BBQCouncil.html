@@ -2240,7 +2240,7 @@
         '<div class="grp-col" id="grpcol-' + g.id + '">',
           '<div class="grp-col-header">',
             '<div class="grp-col-name">' + escHtml(g.name) + '</div>',
-            '<button class="grp-edit-btn' + (isEditing ? ' active' : '') + '" onclick="window._grpToggleEdit('' + g.id + '')">' + (isEditing ? '&#x2716; Close' : '&#x270F; Edit') + '</button>',
+            '<button class="grp-edit-btn' + (isEditing ? ' active' : '') + '" onclick="window._grpToggleEdit(\'' + g.id + '\')">' + (isEditing ? '&#x2716; Close' : '&#x270F; Edit') + '</button>',
           '</div>',
 
           /* ── View mode ── */
@@ -2260,13 +2260,13 @@
             '</div>',
             '<div>',
               '<label class="grp-edit-label">Responsibilities</label>',
-              '<textarea class="grp-edit-textarea" id="grpresp-' + g.id + '" placeholder="Describe this group's role, duties, and event assignments...">' + escHtml(g.responsibilities) + '</textarea>',
+              '<textarea class="grp-edit-textarea" id="grpresp-' + g.id + '" placeholder="Describe this group&#39;s role, duties, and event assignments...">' + escHtml(g.responsibilities) + '</textarea>',
             '</div>',
             '<div>',
               '<label class="grp-edit-label">Members</label>',
               '<textarea class="grp-edit-textarea" id="grpmemb-' + g.id + '" placeholder="List member names, one per line or comma-separated..." style="min-height:90px;">' + escHtml(g.members) + '</textarea>',
             '</div>',
-            '<button class="grp-save-btn" id="grpsave-' + g.id + '" onclick="window._grpSave('' + g.id + '')">&#x1F4BE; Save Group</button>',
+            '<button class="grp-save-btn" id="grpsave-' + g.id + '" onclick="window._grpSave(\'' + g.id + '\')">&#x1F4BE; Save Group</button>',
           '</div>',
 
         '</div>'
