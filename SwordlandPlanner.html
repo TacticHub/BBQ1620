@@ -636,13 +636,76 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
 
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
-  .planner-grid { grid-template-columns: 1fr; }
-  .dispatch-tab { padding: 10px 16px; font-size: 0.68rem; }
+  .planner-grid { flex-direction: column; }
+  .dispatch-tab { padding: 10px 12px; font-size: 0.65rem; }
+  .roster-panel { grid-template-columns: 1fr; }
+  .role-guide-bar { grid-template-columns: 1fr; }
 }
+
 @media (max-width: 600px) {
-  .dispatch-header { flex-direction: column; align-items: flex-start; gap: 10px; }
-  .dispatch-time-wrap { width: 100%; }
-  h1 { font-size: 1.5rem; }
+  /* Header */
+  h1 { font-size: 1.4rem; }
+  .header-sub { font-size: 0.6rem; }
+  main { padding: 16px 12px 60px; }
+
+  /* How-to bar — stack vertically, clean */
+  .how-to-bar {
+    flex-direction: column;
+    gap: 12px;
+    padding: 14px;
+  }
+  .how-to-option {
+    min-width: 0;
+    width: 100%;
+    flex-wrap: wrap;
+    gap: 8px;
+  }
+  .how-to-icon { font-size: 1.1rem; }
+  .how-to-title { font-size: 0.65rem; }
+  .how-to-desc { font-size: 0.78rem; }
+  .how-to-divider { text-align: center; width: 100%; padding: 2px 0; }
+  .upload-btn { width: 100%; text-align: center; justify-content: center; }
+
+  /* Dispatch tabs — don't wrap, allow scroll */
+  .dispatch-tabs { overflow-x: auto; flex-wrap: nowrap; gap: 0; }
+  .dispatch-tab { padding: 10px 14px; font-size: 0.62rem; white-space: nowrap; flex-shrink: 0; }
+  .alliance-switcher { flex-shrink: 0; padding-left: 12px; gap: 6px; }
+  .alliance-switcher-label { display: none; }
+  .alliance-btn { padding: 5px 10px; font-size: 0.7rem; }
+
+  /* Dispatch header */
+  .dispatch-header { flex-direction: column; align-items: flex-start; gap: 8px; padding: 12px 14px; }
+  .dispatch-header-title { font-size: 0.8rem; }
+  .dispatch-time-wrap { width: 100%; flex-wrap: wrap; gap: 8px; }
+  .dispatch-time-input { width: 130px; }
+  .local-time-display { flex: none; }
+  .dispatch-note-input { width: 100%; min-width: 0; }
+
+  /* Map — single column on mobile */
+  .map-panel-inner { grid-template-columns: 1fr; }
+  .map-panel-inner .map-svg-wrap { border-right: none; border-bottom: 1px solid rgba(212,137,26,0.1); padding: 10px; }
+  .map-panel-inner .map-sidebar { max-height: none; }
+
+  /* Role guide — single column */
+  .role-guide-bar { grid-template-columns: 1fr; gap: 10px; }
+  .role-guide-item { padding: 12px 14px; }
+
+  /* Action bar */
+  .action-bar { flex-wrap: wrap; gap: 8px; }
+  .action-btn { font-size: 0.6rem; padding: 8px 12px; }
+
+  /* Add player button */
+  .add-row-btn { font-size: 0.58rem; padding: 6px 12px; }
+
+  /* Group card header */
+  .group-card-header { flex-wrap: wrap; gap: 8px; padding: 10px 12px; }
+  .group-card-name { font-size: 0.78rem; }
+  .group-buildings { font-size: 0.65rem; }
+
+  /* Player table */
+  .player-table { font-size: 0.82rem; }
+  .player-table th { font-size: 0.55rem; padding: 6px 8px; }
+  .player-table td { padding: 6px 8px; }
 }
 
   /* ── SAVE / ARCHIVE ── */
