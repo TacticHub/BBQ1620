@@ -613,7 +613,6 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
 /* ── RESPONSIVE ── */
 @media (max-width: 900px) {
   .planner-grid { grid-template-columns: 1fr; }
-  .map-panel { position: static; }
   .dispatch-tab { padding: 10px 16px; font-size: 0.68rem; }
 }
 @media (max-width: 600px) {
@@ -720,7 +719,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
     #discordModal, #archiveDrawer, #saveModal, .toast, .back-link,
     .add-row-btn, .remove-row-btn, .modal-overlay { display: none !important; }
     .dispatch-panel { display: block !important; }
-    .planner-grid { grid-template-columns: 280px 1fr !important; }
+    .planner-grid { flex-direction: column; }
   }
 
   /* ── ALLIANCE SWITCHER ── */
@@ -771,7 +770,7 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
     margin-left: 8px;
   }
   .alliance-badge.bbq  { background: rgba(212,137,26,0.15); color: var(--gold); border: 1px solid rgba(212,137,26,0.35); }
-  .alliance-badge.bbq-lower { background: rgba(41,182,246,0.12); color: #29b6f6; border: 1px solid rgba(41,182,246,0.3); }
+  .alliance-badge.bbq-lower { background: rgba(41,182,246,0.12); color: #29b6f6; border: 1px solid rgba(41,182,246,0.3); font-family: 'Lato', sans-serif; text-transform: none; letter-spacing: 0.04em; }
   .alliance-badge.bbq-lower  { background: rgba(41,182,246,0.12); color: #29b6f6;    border: 1px solid rgba(41,182,246,0.3); }
 
   .local-time-display {
@@ -802,6 +801,58 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
     font-size: 0.65rem;
     color: var(--text-muted);
   }
+
+  /* ── HOW TO USE BAR ── */
+  .how-to-bar {
+    background: var(--dark2);
+    border: 1px solid rgba(212,137,26,0.15);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .how-to-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .how-to-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .how-to-text { flex: 1; min-width: 0; }
+  .how-to-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    margin-bottom: 2px;
+  }
+  .how-to-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+  .how-to-desc strong { color: var(--text-dim); }
+  .how-to-divider {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    padding: 0 4px;
+  }
+  @media (max-width: 700px) {
+    .how-to-divider { flex-basis: 100%; text-align: center; }
+    .how-to-option { min-width: 100%; }
+  }
 </style>
 </head>
 <body>
@@ -816,12 +867,27 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
 <main>
 
   <!-- UPLOAD BAR -->
-  <div class="upload-bar">
-    <div class="upload-bar-label">📥 Import Roster</div>
-    <span class="alliance-badge bbq" id="uploadBadge">BBQ</span>
-    <button class="upload-btn" onclick="document.getElementById('xlsxInput').click()">Upload Excel / CSV</button>
-    <input type="file" id="xlsxInput" class="upload-file-input" accept=".xlsx,.csv" onchange="handleFileUpload(this)">
-    <div class="upload-status" id="uploadStatus">Upload an Excel or CSV file to auto-populate rosters — or fill in manually below.</div>
+  <!-- HOW TO USE CALLOUT -->
+  <div class="how-to-bar">
+    <div class="how-to-option">
+      <div class="how-to-icon">📥</div>
+      <div class="how-to-text">
+        <div class="how-to-title">Option 1 — Import File</div>
+        <div class="how-to-desc">Upload an Excel or CSV file to auto-populate all rosters instantly.</div>
+      </div>
+      <span class="alliance-badge bbq" id="uploadBadge">BBQ</span>
+      <button class="upload-btn" onclick="document.getElementById('xlsxInput').click()">Upload Excel / CSV</button>
+      <input type="file" id="xlsxInput" class="upload-file-input" accept=".xlsx,.csv" onchange="handleFileUpload(this)">
+    </div>
+    <div class="how-to-divider">— or —</div>
+    <div class="how-to-option">
+      <div class="how-to-icon">✏️</div>
+      <div class="how-to-text">
+        <div class="how-to-title">Option 2 — Manual Entry</div>
+        <div class="how-to-desc">Use the <strong>＋ Add Player</strong> buttons on each group card below to type names, power, and roles directly.</div>
+      </div>
+    </div>
+    <div class="upload-status" id="uploadStatus" style="flex-basis:100%;margin-top:4px;"></div>
   </div>
 
   <!-- DISPATCH TABS + ALLIANCE SWITCHER -->
@@ -854,7 +920,8 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
     <div class="planner-grid">
       <div class="map-panel" id="mapPanel">
         <div class="map-panel-title">🗺 Map Overview</div>
-        <div class="map-svg-wrap">
+        <div class="map-panel-inner">
+          <div class="map-svg-wrap">
           <!-- Swordland map SVG -->
           <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;">
   <!-- Background -->
@@ -968,16 +1035,19 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
   <text x="332" y="369" text-anchor="middle" fill="#6495ed" font-family="Lato,sans-serif" font-size="8" font-weight="700">Stables</text>
   <text x="332" y="381" text-anchor="middle" fill="#3050a0" font-family="Lato,sans-serif" font-size="6">Group 3</text>
 </svg>
-        </div>
-        <div class="map-legend">
+                  </div>
+          <div class="map-sidebar">
+            <div class="map-legend">
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#f0c040;"></div>Group 1 — Bell Tower, Top Abbey, Mercenary</div>
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#50c878;"></div>Group 2 — Sanctum, Mid Abbey</div>
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#6495ed;"></div>Group 3 — Low Abbey, Reformation, Stables</div>
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#d4891a;"></div>Swordshrine — Contested Center</div>
         </div>
-        <div class="map-roles">
+            <div class="map-roles">
           <div class="map-role-block">
             <div class="map-role-title tank">⚔ TANKS</div>
+          </div>
+        </div>
             <div class="map-role-desc">Teleport to assigned building(s). Get it first, go solo if needed. Attack enemies with your healers.</div>
           </div>
           <div class="map-role-block">
@@ -1025,7 +1095,8 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
     <div class="planner-grid">
       <div class="map-panel">
         <div class="map-panel-title">🗺 Map Overview</div>
-        <div class="map-svg-wrap">
+        <div class="map-panel-inner">
+          <div class="map-svg-wrap">
           <svg viewBox="0 0 480 480" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;">
   <!-- Background -->
   <rect width="480" height="480" fill="#1a1410" rx="6"/>
@@ -1138,16 +1209,19 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
   <text x="332" y="369" text-anchor="middle" fill="#6495ed" font-family="Lato,sans-serif" font-size="8" font-weight="700">Stables</text>
   <text x="332" y="381" text-anchor="middle" fill="#3050a0" font-family="Lato,sans-serif" font-size="6">Group 3</text>
 </svg>
-        </div>
-        <div class="map-legend">
+                  </div>
+          <div class="map-sidebar">
+            <div class="map-legend">
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#f0c040;"></div>Group 1 — Bell Tower, Top Abbey, Mercenary</div>
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#50c878;"></div>Group 2 — Sanctum, Mid Abbey</div>
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#6495ed;"></div>Group 3 — Low Abbey, Reformation, Stables</div>
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#d4891a;"></div>Swordshrine — Contested Center</div>
         </div>
-        <div class="map-roles">
+            <div class="map-roles">
           <div class="map-role-block">
             <div class="map-role-title tank">⚔ TANKS</div>
+          </div>
+        </div>
             <div class="map-role-desc">Teleport to assigned building(s). Get it first, go solo if needed. Attack enemies with your healers.</div>
           </div>
           <div class="map-role-block">
@@ -1290,7 +1364,7 @@ function renderRoster(di) {
     card.className = 'group-card';
     card.innerHTML = `
       <div class="group-card-header ${g.cls}">
-        <div>
+        <div style="flex:1;">
           <div class="group-card-name ${g.cls}">${g.label}</div>
           <div class="group-buildings">${g.buildings}</div>
         </div>
@@ -1892,7 +1966,7 @@ function buildExportHTML(plan) {
     margin-left: 8px;
   }
   .alliance-badge.bbq  { background: rgba(212,137,26,0.15); color: var(--gold); border: 1px solid rgba(212,137,26,0.35); }
-  .alliance-badge.bbq-lower { background: rgba(41,182,246,0.12); color: #29b6f6; border: 1px solid rgba(41,182,246,0.3); }
+  .alliance-badge.bbq-lower { background: rgba(41,182,246,0.12); color: #29b6f6; border: 1px solid rgba(41,182,246,0.3); font-family: 'Lato', sans-serif; text-transform: none; letter-spacing: 0.04em; }
   .alliance-badge.bbq-lower  { background: rgba(41,182,246,0.12); color: #29b6f6;    border: 1px solid rgba(41,182,246,0.3); }
 
   .local-time-display {
@@ -1922,6 +1996,58 @@ function buildExportHTML(plan) {
     font-family: 'Lato', sans-serif;
     font-size: 0.65rem;
     color: var(--text-muted);
+  }
+
+  /* ── HOW TO USE BAR ── */
+  .how-to-bar {
+    background: var(--dark2);
+    border: 1px solid rgba(212,137,26,0.15);
+    border-radius: 10px;
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 20px;
+  }
+  .how-to-option {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+    min-width: 240px;
+  }
+  .how-to-icon {
+    font-size: 1.4rem;
+    flex-shrink: 0;
+    line-height: 1;
+  }
+  .how-to-text { flex: 1; min-width: 0; }
+  .how-to-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    color: var(--gold);
+    margin-bottom: 2px;
+  }
+  .how-to-desc {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    line-height: 1.4;
+  }
+  .how-to-desc strong { color: var(--text-dim); }
+  .how-to-divider {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    letter-spacing: 0.12em;
+    color: var(--text-muted);
+    flex-shrink: 0;
+    padding: 0 4px;
+  }
+  @media (max-width: 700px) {
+    .how-to-divider { flex-basis: 100%; text-align: center; }
+    .how-to-option { min-width: 100%; }
   }
 </style>
 </head>
