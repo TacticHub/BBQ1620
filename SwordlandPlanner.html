@@ -912,6 +912,19 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
   @media (max-width: 700px) {
     .role-guide-bar { grid-template-columns: 1fr; }
   }
+
+  .role-list {
+    margin: 0;
+    padding-left: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .role-list li {
+    font-size: 0.83rem;
+    color: var(--text-dim);
+    line-height: 1.4;
+  }
 </style>
 </head>
 <body>
@@ -1112,15 +1125,39 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
       <div class="role-guide-bar">
         <div class="role-guide-item tank">
           <div class="role-guide-title">⚔ TANKS</div>
-          <div class="role-guide-desc">Teleport to assigned building(s). Cap it first — go solo if needed. Attack enemies alongside your healers.</div>
+          <div class="role-guide-desc">
+            <ul class="role-list">
+              <li>Teleport to the assigned building(s)</li>
+              <li>Get it first (go solo if needed)</li>
+              <li>Attack enemies that show up (solo or rally with your healers)</li>
+            </ul>
+          </div>
         </div>
         <div class="role-guide-item healer">
           <div class="role-guide-title">✚ HEALERS</div>
-          <div class="role-guide-desc">Teleport to assigned building(s). Garrison in both if possible. Reinforce your tank and each other. Call out enemy DPS positions in chat.</div>
+          <div class="role-guide-desc">
+            <ul class="role-list">
+              <li>Teleport to the assigned building(s)</li>
+              <li>Garrison in both assigned buildings if possible</li>
+              <li>Reinforce your tank / reinforce each other</li>
+              <li>Use the "Share Coordinates" option in chat so DPS can quickly get to you</li>
+            </ul>
+          </div>
         </div>
         <div class="role-guide-item dps">
           <div class="role-guide-title">🎯 DPS</div>
-          <div class="role-guide-desc">Roam free — do NOT garrison. Teleport wherever help is needed. Attack players lower power than you. Burn enemies on our side of the map.</div>
+          <div class="role-guide-desc">
+            <ul class="role-list">
+              <li>Roam free</li>
+              <li>Do not garrison (you will move a lot)</li>
+              <li>Teleport to any position your help is needed</li>
+              <li>Attack every player lower than you</li>
+              <li>Be a pain in their ass</li>
+              <li>Demotivate their team</li>
+              <li>Burn players that come on our side of the map</li>
+              <li>Steal first capture points from the enemy</li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -1287,15 +1324,39 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
       <div class="role-guide-bar">
         <div class="role-guide-item tank">
           <div class="role-guide-title">⚔ TANKS</div>
-          <div class="role-guide-desc">Teleport to assigned building(s). Cap it first — go solo if needed. Attack enemies alongside your healers.</div>
+          <div class="role-guide-desc">
+            <ul class="role-list">
+              <li>Teleport to the assigned building(s)</li>
+              <li>Get it first (go solo if needed)</li>
+              <li>Attack enemies that show up (solo or rally with your healers)</li>
+            </ul>
+          </div>
         </div>
         <div class="role-guide-item healer">
           <div class="role-guide-title">✚ HEALERS</div>
-          <div class="role-guide-desc">Teleport to assigned building(s). Garrison in both if possible. Reinforce your tank and each other. Call out enemy DPS positions in chat.</div>
+          <div class="role-guide-desc">
+            <ul class="role-list">
+              <li>Teleport to the assigned building(s)</li>
+              <li>Garrison in both assigned buildings if possible</li>
+              <li>Reinforce your tank / reinforce each other</li>
+              <li>Use the "Share Coordinates" option in chat so DPS can quickly get to you</li>
+            </ul>
+          </div>
         </div>
         <div class="role-guide-item dps">
           <div class="role-guide-title">🎯 DPS</div>
-          <div class="role-guide-desc">Roam free — do NOT garrison. Teleport wherever help is needed. Attack players lower power than you. Burn enemies on our side of the map.</div>
+          <div class="role-guide-desc">
+            <ul class="role-list">
+              <li>Roam free</li>
+              <li>Do not garrison (you will move a lot)</li>
+              <li>Teleport to any position your help is needed</li>
+              <li>Attack every player lower than you</li>
+              <li>Be a pain in their ass</li>
+              <li>Demotivate their team</li>
+              <li>Burn players that come on our side of the map</li>
+              <li>Steal first capture points from the enemy</li>
+            </ul>
+          </div>
         </div>
       </div>
 
@@ -2148,6 +2209,19 @@ function buildExportHTML(plan) {
   }
   @media (max-width: 700px) {
     .role-guide-bar { grid-template-columns: 1fr; }
+  }
+
+  .role-list {
+    margin: 0;
+    padding-left: 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+  .role-list li {
+    font-size: 0.83rem;
+    color: var(--text-dim);
+    line-height: 1.4;
   }
 </style>
 </head>
