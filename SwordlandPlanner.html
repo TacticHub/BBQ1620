@@ -1,0 +1,1197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Swordland Showdown — Battle Planner</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@400;700&family=Cinzel:wght@400;600;700&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,400&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #d4891a;
+  --gold-light: #f0a830;
+  --gold-pale: #ffd580;
+  --dark: #0e0e10;
+  --dark2: #17171c;
+  --dark3: #1e1e24;
+  --dark4: #26262e;
+  --text: #f0eeea;
+  --text-dim: #d8cfc0;
+  --text-muted: #a89880;
+  --green: #3d7a34;
+  --green-bright: #5ebd50;
+  --blue: #1a6090;
+  --blue-bright: #29b6f6;
+  --red: #c0392b;
+  --red-bright: #e74c3c;
+  --purple: #7a4a9a;
+  --orange: #e07020;
+  --sand: #c4a97a;
+  /* Role colors */
+  --tank-color: #e07020;
+  --healer-color: #3d9a5a;
+  --dps-color: #c0392b;
+  --reserve-color: #6a6a8a;
+  /* Group colors */
+  --grp1-color: #f0c040;
+  --grp2-color: #50c878;
+  --grp3-color: #6495ed;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--dark);
+  color: var(--text);
+  font-family: 'Crimson Pro', Georgia, serif;
+  font-size: 16px;
+  line-height: 1.6;
+  background-image:
+    linear-gradient(rgba(14,14,16,0.90), rgba(14,14,16,0.90)),
+    url('https://tactichub.github.io/BBQ1620/Back1.PNG');
+  background-attachment: fixed;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: cover;
+  min-height: 100vh;
+}
+
+/* ── HEADER ── */
+header {
+  text-align: center;
+  padding: 32px 20px 24px;
+  border-bottom: 2px solid var(--gold);
+  background: linear-gradient(180deg, rgba(212,137,26,0.1) 0%, transparent 100%);
+  position: relative;
+}
+.header-badge {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+}
+h1 {
+  font-family: 'Cinzel Decorative', serif;
+  font-size: clamp(1.6rem, 4vw, 2.8rem);
+  color: var(--gold);
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  text-shadow: 0 0 40px rgba(212,137,26,0.3);
+}
+.header-sub {
+  font-family: 'Cinzel', serif;
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 8px;
+}
+.back-link {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  text-decoration: none;
+  border: 1px solid rgba(212,137,26,0.2);
+  padding: 6px 12px;
+  border-radius: 5px;
+  transition: all 0.2s;
+}
+.back-link:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ── MAIN LAYOUT ── */
+main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
+
+/* ── TABS ── */
+.dispatch-tabs {
+  display: flex;
+  gap: 0;
+  border-bottom: 2px solid rgba(212,137,26,0.25);
+  margin-bottom: 28px;
+}
+.dispatch-tab {
+  font-family: 'Cinzel', serif;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 12px 28px;
+  cursor: pointer;
+  border: none;
+  background: transparent;
+  color: var(--text-muted);
+  border-bottom: 2px solid transparent;
+  margin-bottom: -2px;
+  transition: all 0.2s;
+  -webkit-appearance: none;
+}
+.dispatch-tab:hover { color: var(--gold); }
+.dispatch-tab.active {
+  color: var(--gold);
+  border-bottom-color: var(--gold);
+  background: rgba(212,137,26,0.06);
+}
+
+/* ── DISPATCH PANEL ── */
+.dispatch-panel { display: none; }
+.dispatch-panel.active { display: block; }
+
+/* ── DISPATCH HEADER BAR ── */
+.dispatch-header {
+  background: var(--dark2);
+  border: 1px solid rgba(212,137,26,0.2);
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.dispatch-header-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  color: var(--gold);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.dispatch-time-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+}
+.dispatch-time-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.dispatch-time-input {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(212,137,26,0.3);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: 'Cinzel', serif;
+  font-size: 0.85rem;
+  padding: 6px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  width: 120px;
+}
+.dispatch-time-input:focus { border-color: var(--gold); }
+.dispatch-note-input {
+  flex: 1;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(212,137,26,0.2);
+  border-radius: 6px;
+  color: var(--text);
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.95rem;
+  padding: 6px 12px;
+  outline: none;
+  transition: border-color 0.2s;
+  min-width: 200px;
+}
+.dispatch-note-input:focus { border-color: var(--gold); }
+.dispatch-note-input::placeholder { color: var(--text-muted); font-style: italic; }
+
+/* ── TWO-COLUMN LAYOUT: Map + Roster ── */
+.planner-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+/* ── MAP PANEL ── */
+.map-panel {
+  background: var(--dark2);
+  border: 1px solid rgba(212,137,26,0.2);
+  border-radius: 10px;
+  overflow: hidden;
+  position: sticky;
+  top: 16px;
+}
+.map-panel-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 12px 14px 8px;
+  border-bottom: 1px solid rgba(212,137,26,0.12);
+}
+.map-svg-wrap {
+  padding: 10px;
+  background: rgba(0,0,0,0.2);
+}
+.map-legend {
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  border-top: 1px solid rgba(212,137,26,0.12);
+}
+.map-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.82rem;
+  color: var(--text-dim);
+}
+.map-legend-dot {
+  width: 12px; height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+.map-roles {
+  padding: 12px 14px;
+  border-top: 1px solid rgba(212,137,26,0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.map-role-block { font-size: 0.82rem; }
+.map-role-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 4px;
+}
+.map-role-title.tank { color: var(--tank-color); }
+.map-role-title.healer { color: var(--healer-color); }
+.map-role-title.dps { color: var(--dps-color); }
+.map-role-desc { color: var(--text-muted); font-size: 0.78rem; line-height: 1.4; }
+
+/* ── ROSTER PANEL ── */
+.roster-panel { display: flex; flex-direction: column; gap: 16px; }
+
+/* ── GROUP CARD ── */
+.group-card {
+  background: var(--dark2);
+  border: 1px solid rgba(212,137,26,0.15);
+  border-radius: 10px;
+  overflow: hidden;
+}
+.group-card-header {
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  border-bottom: 1px solid rgba(212,137,26,0.1);
+}
+.group-card-header.grp1 { background: rgba(240,192,64,0.08); border-bottom-color: rgba(240,192,64,0.2); }
+.group-card-header.grp2 { background: rgba(80,200,120,0.07); border-bottom-color: rgba(80,200,120,0.18); }
+.group-card-header.grp3 { background: rgba(100,149,237,0.07); border-bottom-color: rgba(100,149,237,0.18); }
+.group-card-header.dps  { background: rgba(192,57,43,0.07);   border-bottom-color: rgba(192,57,43,0.18); }
+.group-card-header.reserve { background: rgba(106,106,138,0.07); border-bottom-color: rgba(106,106,138,0.18); }
+
+.group-card-name {
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+}
+.group-card-name.grp1 { color: var(--grp1-color); }
+.group-card-name.grp2 { color: var(--grp2-color); }
+.group-card-name.grp3 { color: var(--grp3-color); }
+.group-card-name.dps   { color: var(--dps-color); }
+.group-card-name.reserve { color: var(--text-muted); }
+
+.group-buildings {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  letter-spacing: 0.03em;
+}
+
+/* ── PLAYER TABLE ── */
+.player-table-wrap { overflow-x: auto; }
+.player-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.88rem;
+}
+.player-table th {
+  font-family: 'Cinzel', serif;
+  font-size: 0.58rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 8px 12px;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  background: rgba(0,0,0,0.15);
+  white-space: nowrap;
+}
+.player-table td {
+  padding: 7px 12px;
+  border-bottom: 1px solid rgba(255,255,255,0.03);
+  vertical-align: middle;
+}
+.player-table tr:last-child td { border-bottom: none; }
+.player-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.player-name-cell {
+  font-weight: 600;
+  color: var(--text);
+  min-width: 110px;
+}
+.player-power {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.role-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  white-space: nowrap;
+}
+.role-badge.tank    { background: rgba(224,112,32,0.15); color: #f09050; border: 1px solid rgba(224,112,32,0.3); }
+.role-badge.healer  { background: rgba(61,154,90,0.15);  color: #70d490; border: 1px solid rgba(61,154,90,0.3); }
+.role-badge.dps     { background: rgba(192,57,43,0.15);  color: #e07060; border: 1px solid rgba(192,57,43,0.3); }
+.role-badge.reserve { background: rgba(106,106,138,0.12); color: #9898b8; border: 1px solid rgba(106,106,138,0.25); }
+
+/* Editable player cells */
+.player-table td input[type="text"] {
+  background: transparent;
+  border: none;
+  border-bottom: 1px solid transparent;
+  color: var(--text);
+  font-family: 'Crimson Pro', serif;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 1px 4px;
+  outline: none;
+  width: 100%;
+  min-width: 80px;
+  transition: border-color 0.2s;
+}
+.player-table td input[type="text"]:hover,
+.player-table td input[type="text"]:focus {
+  border-bottom-color: rgba(212,137,26,0.4);
+}
+.player-table td select {
+  background: var(--dark3);
+  border: 1px solid rgba(212,137,26,0.2);
+  border-radius: 4px;
+  color: var(--text);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.75rem;
+  padding: 3px 6px;
+  outline: none;
+  -webkit-appearance: none;
+  cursor: pointer;
+}
+.player-table td select option { background: var(--dark3); }
+
+/* Add row button */
+.add-row-btn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  padding: 8px 14px;
+  transition: color 0.2s;
+  -webkit-appearance: none;
+}
+.add-row-btn:hover { color: var(--gold); }
+.remove-row-btn {
+  background: transparent;
+  border: none;
+  color: rgba(192,57,43,0.4);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 2px 6px;
+  transition: color 0.2s;
+  -webkit-appearance: none;
+}
+.remove-row-btn:hover { color: var(--red-bright); }
+
+/* ── UPLOAD SECTION ── */
+.upload-bar {
+  background: var(--dark2);
+  border: 1px solid rgba(212,137,26,0.15);
+  border-radius: 10px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+}
+.upload-bar-label {
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.upload-btn {
+  background: rgba(212,137,26,0.12);
+  border: 1px solid rgba(212,137,26,0.35);
+  border-radius: 6px;
+  color: var(--gold);
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  padding: 7px 14px;
+  transition: all 0.2s;
+  -webkit-appearance: none;
+}
+.upload-btn:hover { background: rgba(212,137,26,0.22); }
+.upload-file-input { display: none; }
+.upload-status {
+  font-family: 'Lato', sans-serif;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+  flex: 1;
+}
+.upload-status.success { color: var(--green-bright); font-style: normal; }
+.upload-status.error { color: var(--red-bright); font-style: normal; }
+
+/* ── ACTION BAR ── */
+.action-bar {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(212,137,26,0.15);
+}
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(212,137,26,0.12);
+  border: 1px solid rgba(212,137,26,0.35);
+  border-radius: 7px;
+  color: var(--gold);
+  cursor: pointer;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.1em;
+  padding: 9px 16px;
+  transition: all 0.2s;
+  -webkit-appearance: none;
+}
+.action-btn:hover { background: rgba(212,137,26,0.22); border-color: var(--gold); }
+.action-btn.primary {
+  background: var(--gold);
+  color: var(--dark);
+  border-color: var(--gold);
+}
+.action-btn.primary:hover { background: var(--gold-light); }
+.action-btn.danger { border-color: rgba(192,57,43,0.4); color: var(--red-bright); background: rgba(192,57,43,0.08); }
+.action-btn.danger:hover { background: rgba(192,57,43,0.18); }
+
+/* ── DISCORD OUTPUT MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 500;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+}
+.modal-overlay.open { display: flex; }
+.modal {
+  background: var(--dark2);
+  border: 1px solid rgba(212,137,26,0.3);
+  border-radius: 12px;
+  max-width: 680px;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.7);
+}
+.modal-header {
+  padding: 16px 20px;
+  border-bottom: 1px solid rgba(212,137,26,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.modal-title {
+  font-family: 'Cinzel', serif;
+  font-size: 0.82rem;
+  letter-spacing: 0.08em;
+  color: var(--gold);
+  font-weight: 700;
+}
+.modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 1.2rem;
+  padding: 2px 8px;
+  transition: color 0.2s;
+  -webkit-appearance: none;
+}
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 16px 20px; overflow-y: auto; flex: 1; }
+.modal-output {
+  background: #1a1a20;
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 8px;
+  color: #e0e0e8;
+  font-family: 'Courier New', monospace;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  padding: 14px 16px;
+  white-space: pre-wrap;
+  word-break: break-word;
+  margin-bottom: 12px;
+  max-height: 380px;
+  overflow-y: auto;
+}
+.modal-hint {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 10px;
+}
+.modal-footer {
+  padding: 14px 20px;
+  border-top: 1px solid rgba(212,137,26,0.15);
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+}
+
+/* ── TOAST ── */
+.toast {
+  position: fixed;
+  bottom: 24px;
+  left: 50%;
+  transform: translateX(-50%) translateY(80px);
+  background: var(--dark2);
+  border: 1px solid rgba(212,137,26,0.4);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Lato', sans-serif;
+  font-size: 0.85rem;
+  padding: 10px 20px;
+  z-index: 600;
+  transition: transform 0.3s ease;
+  white-space: nowrap;
+}
+.toast.show { transform: translateX(-50%) translateY(0); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 900px) {
+  .planner-grid { grid-template-columns: 1fr; }
+  .map-panel { position: static; }
+  .dispatch-tab { padding: 10px 16px; font-size: 0.68rem; }
+}
+@media (max-width: 600px) {
+  .dispatch-header { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .dispatch-time-wrap { width: 100%; }
+  h1 { font-size: 1.5rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <a href="https://tactichub.github.io/BBQ1620/BBQCouncil.html" class="back-link">← Council</a>
+  <div class="header-badge">BBQ Beach Party — Kingdom #1620</div>
+  <h1>⚔ Swordland Showdown</h1>
+  <div class="header-sub">Battle Planner &nbsp;·&nbsp; R4/R5 Leadership Tool</div>
+</header>
+
+<main>
+
+  <!-- UPLOAD BAR -->
+  <div class="upload-bar">
+    <div class="upload-bar-label">📥 Import Roster</div>
+    <button class="upload-btn" onclick="document.getElementById('xlsxInput').click()">Upload Excel / CSV</button>
+    <input type="file" id="xlsxInput" class="upload-file-input" accept=".xlsx,.csv" onchange="handleFileUpload(this)">
+    <div class="upload-status" id="uploadStatus">Upload an Excel or CSV file to auto-populate rosters — or fill in manually below.</div>
+  </div>
+
+  <!-- DISPATCH TABS -->
+  <div class="dispatch-tabs">
+    <button class="dispatch-tab active" onclick="switchTab(0)">⚔ Dispatch 1</button>
+    <button class="dispatch-tab" onclick="switchTab(1)">⚔ Dispatch 2</button>
+  </div>
+
+  <!-- DISPATCH 1 -->
+  <div class="dispatch-panel active" id="panel-0">
+    <div class="dispatch-header">
+      <div class="dispatch-header-title">DISPATCH 1</div>
+      <div class="dispatch-time-wrap">
+        <div class="dispatch-time-label">⏰ Time:</div>
+        <input type="time" class="dispatch-time-input" id="time-0" value="14:00">
+        <div class="dispatch-time-label" style="margin-left:12px;">📝 Notes:</div>
+        <input type="text" class="dispatch-note-input" id="note-0" placeholder="Rally notes, special instructions...">
+      </div>
+    </div>
+    <div class="planner-grid">
+      <div class="map-panel" id="mapPanel">
+        <div class="map-panel-title">🗺 Map Overview</div>
+        <div class="map-svg-wrap">
+          <!-- Swordland map SVG -->
+          <svg viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;">
+            <!-- Background -->
+            <rect width="320" height="360" fill="#1a1410" rx="6"/>
+            <!-- Terrain texture -->
+            <ellipse cx="160" cy="180" rx="145" ry="160" fill="#241c10" opacity="0.6"/>
+            <!-- Home base diamond (bottom center) -->
+            <polygon points="160,310 185,330 160,350 135,330" fill="#0a1a2a" stroke="#29b6f6" stroke-width="2" opacity="0.8"/>
+            <text x="160" y="334" text-anchor="middle" fill="#29b6f6" font-family="Cinzel,serif" font-size="6" font-weight="700">HOME</text>
+            <!-- Enemy base diamond (top center, red) -->
+            <polygon points="160,10 185,30 160,50 135,30" fill="#1a0a08" stroke="#e74c3c" stroke-width="2" opacity="0.8"/>
+            <text x="160" y="34" text-anchor="middle" fill="#e74c3c" font-family="Cinzel,serif" font-size="6" font-weight="700">ENEMY</text>
+
+            <!-- === GROUP 1 — TOP (yellow) === -->
+            <!-- Bell Tower -->
+            <rect x="85" y="58" width="52" height="26" rx="4" fill="#1e1a08" stroke="#f0c040" stroke-width="1.5"/>
+            <text x="111" y="69" text-anchor="middle" fill="#f0c040" font-family="Lato,sans-serif" font-size="7" font-weight="700">Bell Tower</text>
+            <text x="111" y="79" text-anchor="middle" fill="#a08820" font-family="Lato,sans-serif" font-size="5.5">Group 1</text>
+            <!-- Top Abbey -->
+            <rect x="183" y="58" width="52" height="26" rx="4" fill="#1e1a08" stroke="#f0c040" stroke-width="1.5"/>
+            <text x="209" y="69" text-anchor="middle" fill="#f0c040" font-family="Lato,sans-serif" font-size="7" font-weight="700">Top Abbey</text>
+            <text x="209" y="79" text-anchor="middle" fill="#a08820" font-family="Lato,sans-serif" font-size="5.5">Group 1</text>
+            <!-- Mercenary -->
+            <rect x="134" y="90" width="52" height="26" rx="4" fill="#1e1a08" stroke="#f0c040" stroke-width="1.5"/>
+            <text x="160" y="101" text-anchor="middle" fill="#f0c040" font-family="Lato,sans-serif" font-size="7" font-weight="700">Mercenary</text>
+            <text x="160" y="111" text-anchor="middle" fill="#a08820" font-family="Lato,sans-serif" font-size="5.5">Group 1</text>
+            <!-- Group 1 triangle outline -->
+            <polygon points="111,58 209,58 160,116" fill="none" stroke="#f0c040" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>
+
+            <!-- === GROUP 2 — MID (green) === -->
+            <!-- Left Sanctum -->
+            <rect x="50" y="150" width="52" height="26" rx="4" fill="#081e10" stroke="#50c878" stroke-width="1.5"/>
+            <text x="76" y="161" text-anchor="middle" fill="#50c878" font-family="Lato,sans-serif" font-size="7" font-weight="700">Sanctum</text>
+            <text x="76" y="171" text-anchor="middle" fill="#2a7840" font-family="Lato,sans-serif" font-size="5.5">Group 2</text>
+            <!-- Right Abbey (mid) -->
+            <rect x="218" y="150" width="52" height="26" rx="4" fill="#081e10" stroke="#50c878" stroke-width="1.5"/>
+            <text x="244" y="161" text-anchor="middle" fill="#50c878" font-family="Lato,sans-serif" font-size="7" font-weight="700">Mid Abbey</text>
+            <text x="244" y="171" text-anchor="middle" fill="#2a7840" font-family="Lato,sans-serif" font-size="5.5">Group 2</text>
+            <!-- Swordshrine (center) -->
+            <rect x="130" y="148" width="60" height="30" rx="5" fill="#1a100a" stroke="#d4891a" stroke-width="2"/>
+            <text x="160" y="161" text-anchor="middle" fill="#d4891a" font-family="Cinzel,serif" font-size="7" font-weight="700">Swordshrine</text>
+            <text x="160" y="172" text-anchor="middle" fill="#8a5a10" font-family="Lato,sans-serif" font-size="5">CONTESTED</text>
+            <!-- Group 2 connecting lines -->
+            <line x1="76" y1="176" x2="130" y2="163" stroke="#50c878" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.4"/>
+            <line x1="244" y1="176" x2="190" y2="163" stroke="#50c878" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.4"/>
+
+            <!-- === GROUP 3 — BOTTOM (blue) === -->
+            <!-- Left Abbey bottom -->
+            <rect x="50" y="234" width="52" height="26" rx="4" fill="#080e1e" stroke="#6495ed" stroke-width="1.5"/>
+            <text x="76" y="245" text-anchor="middle" fill="#6495ed" font-family="Lato,sans-serif" font-size="7" font-weight="700">Low Abbey</text>
+            <text x="76" y="255" text-anchor="middle" fill="#3050a0" font-family="Lato,sans-serif" font-size="5.5">Group 3</text>
+            <!-- Reformation -->
+            <rect x="134" y="240" width="52" height="26" rx="4" fill="#080e1e" stroke="#6495ed" stroke-width="1.5"/>
+            <text x="160" y="251" text-anchor="middle" fill="#6495ed" font-family="Lato,sans-serif" font-size="7" font-weight="700">Reformation</text>
+            <text x="160" y="261" text-anchor="middle" fill="#3050a0" font-family="Lato,sans-serif" font-size="5.5">Group 3</text>
+            <!-- Stables -->
+            <rect x="218" y="234" width="52" height="26" rx="4" fill="#080e1e" stroke="#6495ed" stroke-width="1.5"/>
+            <text x="244" y="245" text-anchor="middle" fill="#6495ed" font-family="Lato,sans-serif" font-size="7" font-weight="700">Stables</text>
+            <text x="244" y="255" text-anchor="middle" fill="#3050a0" font-family="Lato,sans-serif" font-size="5.5">Group 3</text>
+            <!-- Group 3 triangle outline -->
+            <polygon points="76,234 244,234 160,266" fill="none" stroke="#6495ed" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>
+
+            <!-- Mid undercellars -->
+            <rect x="68" y="202" width="46" height="20" rx="3" fill="#141010" stroke="#6a5040" stroke-width="1"/>
+            <text x="91" y="215" text-anchor="middle" fill="#7a6050" font-family="Lato,sans-serif" font-size="6">Undercellars</text>
+            <rect x="206" y="202" width="46" height="20" rx="3" fill="#141010" stroke="#6a5040" stroke-width="1"/>
+            <text x="229" y="215" text-anchor="middle" fill="#7a6050" font-family="Lato,sans-serif" font-size="6">Undercellars</text>
+            <rect x="68" y="126" width="46" height="20" rx="3" fill="#141010" stroke="#6a5040" stroke-width="1"/>
+            <text x="91" y="139" text-anchor="middle" fill="#7a6050" font-family="Lato,sans-serif" font-size="6">Undercellars</text>
+            <rect x="206" y="126" width="46" height="20" rx="3" fill="#141010" stroke="#6a5040" stroke-width="1"/>
+            <text x="229" y="139" text-anchor="middle" fill="#7a6050" font-family="Lato,sans-serif" font-size="6">Undercellars</text>
+          </svg>
+        </div>
+        <div class="map-legend">
+          <div class="map-legend-item"><div class="map-legend-dot" style="background:#f0c040;"></div>Group 1 — Bell Tower, Top Abbey, Mercenary</div>
+          <div class="map-legend-item"><div class="map-legend-dot" style="background:#50c878;"></div>Group 2 — Sanctum, Mid Abbey</div>
+          <div class="map-legend-item"><div class="map-legend-dot" style="background:#6495ed;"></div>Group 3 — Low Abbey, Reformation, Stables</div>
+          <div class="map-legend-item"><div class="map-legend-dot" style="background:#d4891a;"></div>Swordshrine — Contested Center</div>
+        </div>
+        <div class="map-roles">
+          <div class="map-role-block">
+            <div class="map-role-title tank">⚔ TANKS</div>
+            <div class="map-role-desc">Teleport to assigned building(s). Get it first, go solo if needed. Attack enemies with your healers.</div>
+          </div>
+          <div class="map-role-block">
+            <div class="map-role-title healer">✚ HEALERS</div>
+            <div class="map-role-desc">Teleport to assigned building(s). Garrison in both if possible. Reinforce tank / each other. Call out enemy DPS positions.</div>
+          </div>
+          <div class="map-role-block">
+            <div class="map-role-title dps">🎯 DPS</div>
+            <div class="map-role-desc">Roam free — do NOT garrison. Teleport where help is needed. Attack players lower power. Burn enemies on our side.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ROSTER CARDS -->
+      <div class="roster-panel" id="roster-0">
+        <!-- Rendered by JS -->
+      </div>
+    </div>
+
+    <div class="action-bar">
+      <button class="action-btn primary" onclick="openDiscordModal(0)">📋 Generate Discord Output</button>
+      <button class="action-btn" onclick="clearRoster(0)">🗑 Clear Dispatch 1</button>
+    </div>
+  </div>
+
+  <!-- DISPATCH 2 -->
+  <div class="dispatch-panel" id="panel-1">
+    <div class="dispatch-header">
+      <div class="dispatch-header-title">DISPATCH 2</div>
+      <div class="dispatch-time-wrap">
+        <div class="dispatch-time-label">⏰ Time:</div>
+        <input type="time" class="dispatch-time-input" id="time-1" value="19:00">
+        <div class="dispatch-time-label" style="margin-left:12px;">📝 Notes:</div>
+        <input type="text" class="dispatch-note-input" id="note-1" placeholder="Rally notes, special instructions...">
+      </div>
+    </div>
+    <div class="planner-grid">
+      <div class="map-panel">
+        <div class="map-panel-title">🗺 Map Overview</div>
+        <div class="map-svg-wrap">
+          <svg viewBox="0 0 320 360" xmlns="http://www.w3.org/2000/svg" style="width:100%;border-radius:6px;">
+            <rect width="320" height="360" fill="#1a1410" rx="6"/>
+            <ellipse cx="160" cy="180" rx="145" ry="160" fill="#241c10" opacity="0.6"/>
+            <polygon points="160,310 185,330 160,350 135,330" fill="#0a1a2a" stroke="#29b6f6" stroke-width="2" opacity="0.8"/>
+            <text x="160" y="334" text-anchor="middle" fill="#29b6f6" font-family="Cinzel,serif" font-size="6" font-weight="700">HOME</text>
+            <polygon points="160,10 185,30 160,50 135,30" fill="#1a0a08" stroke="#e74c3c" stroke-width="2" opacity="0.8"/>
+            <text x="160" y="34" text-anchor="middle" fill="#e74c3c" font-family="Cinzel,serif" font-size="6" font-weight="700">ENEMY</text>
+            <rect x="85" y="58" width="52" height="26" rx="4" fill="#1e1a08" stroke="#f0c040" stroke-width="1.5"/>
+            <text x="111" y="69" text-anchor="middle" fill="#f0c040" font-family="Lato,sans-serif" font-size="7" font-weight="700">Bell Tower</text>
+            <text x="111" y="79" text-anchor="middle" fill="#a08820" font-family="Lato,sans-serif" font-size="5.5">Group 1</text>
+            <rect x="183" y="58" width="52" height="26" rx="4" fill="#1e1a08" stroke="#f0c040" stroke-width="1.5"/>
+            <text x="209" y="69" text-anchor="middle" fill="#f0c040" font-family="Lato,sans-serif" font-size="7" font-weight="700">Top Abbey</text>
+            <text x="209" y="79" text-anchor="middle" fill="#a08820" font-family="Lato,sans-serif" font-size="5.5">Group 1</text>
+            <rect x="134" y="90" width="52" height="26" rx="4" fill="#1e1a08" stroke="#f0c040" stroke-width="1.5"/>
+            <text x="160" y="101" text-anchor="middle" fill="#f0c040" font-family="Lato,sans-serif" font-size="7" font-weight="700">Mercenary</text>
+            <text x="160" y="111" text-anchor="middle" fill="#a08820" font-family="Lato,sans-serif" font-size="5.5">Group 1</text>
+            <polygon points="111,58 209,58 160,116" fill="none" stroke="#f0c040" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>
+            <rect x="50" y="150" width="52" height="26" rx="4" fill="#081e10" stroke="#50c878" stroke-width="1.5"/>
+            <text x="76" y="161" text-anchor="middle" fill="#50c878" font-family="Lato,sans-serif" font-size="7" font-weight="700">Sanctum</text>
+            <text x="76" y="171" text-anchor="middle" fill="#2a7840" font-family="Lato,sans-serif" font-size="5.5">Group 2</text>
+            <rect x="218" y="150" width="52" height="26" rx="4" fill="#081e10" stroke="#50c878" stroke-width="1.5"/>
+            <text x="244" y="161" text-anchor="middle" fill="#50c878" font-family="Lato,sans-serif" font-size="7" font-weight="700">Mid Abbey</text>
+            <text x="244" y="171" text-anchor="middle" fill="#2a7840" font-family="Lato,sans-serif" font-size="5.5">Group 2</text>
+            <rect x="130" y="148" width="60" height="30" rx="5" fill="#1a100a" stroke="#d4891a" stroke-width="2"/>
+            <text x="160" y="161" text-anchor="middle" fill="#d4891a" font-family="Cinzel,serif" font-size="7" font-weight="700">Swordshrine</text>
+            <text x="160" y="172" text-anchor="middle" fill="#8a5a10" font-family="Lato,sans-serif" font-size="5">CONTESTED</text>
+            <line x1="76" y1="176" x2="130" y2="163" stroke="#50c878" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.4"/>
+            <line x1="244" y1="176" x2="190" y2="163" stroke="#50c878" stroke-width="0.8" stroke-dasharray="3,3" opacity="0.4"/>
+            <rect x="50" y="234" width="52" height="26" rx="4" fill="#080e1e" stroke="#6495ed" stroke-width="1.5"/>
+            <text x="76" y="245" text-anchor="middle" fill="#6495ed" font-family="Lato,sans-serif" font-size="7" font-weight="700">Low Abbey</text>
+            <text x="76" y="255" text-anchor="middle" fill="#3050a0" font-family="Lato,sans-serif" font-size="5.5">Group 3</text>
+            <rect x="134" y="240" width="52" height="26" rx="4" fill="#080e1e" stroke="#6495ed" stroke-width="1.5"/>
+            <text x="160" y="251" text-anchor="middle" fill="#6495ed" font-family="Lato,sans-serif" font-size="7" font-weight="700">Reformation</text>
+            <text x="160" y="261" text-anchor="middle" fill="#3050a0" font-family="Lato,sans-serif" font-size="5.5">Group 3</text>
+            <rect x="218" y="234" width="52" height="26" rx="4" fill="#080e1e" stroke="#6495ed" stroke-width="1.5"/>
+            <text x="244" y="245" text-anchor="middle" fill="#6495ed" font-family="Lato,sans-serif" font-size="7" font-weight="700">Stables</text>
+            <text x="244" y="255" text-anchor="middle" fill="#3050a0" font-family="Lato,sans-serif" font-size="5.5">Group 3</text>
+            <polygon points="76,234 244,234 160,266" fill="none" stroke="#6495ed" stroke-width="1" stroke-dasharray="4,3" opacity="0.4"/>
+            <rect x="68" y="202" width="46" height="20" rx="3" fill="#141010" stroke="#6a5040" stroke-width="1"/>
+            <text x="91" y="215" text-anchor="middle" fill="#7a6050" font-family="Lato,sans-serif" font-size="6">Undercellars</text>
+            <rect x="206" y="202" width="46" height="20" rx="3" fill="#141010" stroke="#6a5040" stroke-width="1"/>
+            <text x="229" y="215" text-anchor="middle" fill="#7a6050" font-family="Lato,sans-serif" font-size="6">Undercellars</text>
+            <rect x="68" y="126" width="46" height="20" rx="3" fill="#141010" stroke="#6a5040" stroke-width="1"/>
+            <text x="91" y="139" text-anchor="middle" fill="#7a6050" font-family="Lato,sans-serif" font-size="6">Undercellars</text>
+            <rect x="206" y="126" width="46" height="20" rx="3" fill="#141010" stroke="#6a5040" stroke-width="1"/>
+            <text x="229" y="139" text-anchor="middle" fill="#7a6050" font-family="Lato,sans-serif" font-size="6">Undercellars</text>
+          </svg>
+        </div>
+        <div class="map-legend">
+          <div class="map-legend-item"><div class="map-legend-dot" style="background:#f0c040;"></div>Group 1 — Bell Tower, Top Abbey, Mercenary</div>
+          <div class="map-legend-item"><div class="map-legend-dot" style="background:#50c878;"></div>Group 2 — Sanctum, Mid Abbey</div>
+          <div class="map-legend-item"><div class="map-legend-dot" style="background:#6495ed;"></div>Group 3 — Low Abbey, Reformation, Stables</div>
+          <div class="map-legend-item"><div class="map-legend-dot" style="background:#d4891a;"></div>Swordshrine — Contested Center</div>
+        </div>
+        <div class="map-roles">
+          <div class="map-role-block">
+            <div class="map-role-title tank">⚔ TANKS</div>
+            <div class="map-role-desc">Teleport to assigned building(s). Get it first, go solo if needed. Attack enemies with your healers.</div>
+          </div>
+          <div class="map-role-block">
+            <div class="map-role-title healer">✚ HEALERS</div>
+            <div class="map-role-desc">Teleport to assigned building(s). Garrison in both if possible. Reinforce tank / each other. Call out enemy DPS positions.</div>
+          </div>
+          <div class="map-role-block">
+            <div class="map-role-title dps">🎯 DPS</div>
+            <div class="map-role-desc">Roam free — do NOT garrison. Teleport where help is needed. Attack players lower power. Burn enemies on our side.</div>
+          </div>
+        </div>
+      </div>
+      <div class="roster-panel" id="roster-1"></div>
+    </div>
+    <div class="action-bar">
+      <button class="action-btn primary" onclick="openDiscordModal(1)">📋 Generate Discord Output</button>
+      <button class="action-btn" onclick="clearRoster(1)">🗑 Clear Dispatch 2</button>
+    </div>
+  </div>
+
+</main>
+
+<!-- DISCORD MODAL -->
+<div class="modal-overlay" id="discordModal">
+  <div class="modal">
+    <div class="modal-header">
+      <div class="modal-title">📋 Discord Battle Plan</div>
+      <button class="modal-close" onclick="closeModal()">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-hint">Copy and paste into your Discord channel. Each section fits within Discord's character limits.</div>
+      <div class="modal-output" id="discordOutput"></div>
+    </div>
+    <div class="modal-footer">
+      <button class="action-btn primary" onclick="copyDiscord()">📋 Copy to Clipboard</button>
+      <button class="action-btn" onclick="closeModal()">Close</button>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ═══════════════════════════════════════════════════
+   DATA MODEL
+   Each dispatch has groups: G1, G2, G3, DPS, Reserve
+   Each group has players: { name, power, role }
+═══════════════════════════════════════════════════ */
+
+const GROUPS = [
+  { id: 'g1',      label: 'Group 1', cls: 'grp1',    buildings: 'Bell Tower · Top Abbey · Mercenary' },
+  { id: 'g2',      label: 'Group 2', cls: 'grp2',    buildings: 'Sanctum · Mid Abbey' },
+  { id: 'g3',      label: 'Group 3', cls: 'grp3',    buildings: 'Low Abbey · Reformation · Stables' },
+  { id: 'dps',     label: 'DPS',     cls: 'dps',     buildings: 'Roam Free — Do NOT Garrison' },
+  { id: 'reserve', label: 'Reserve', cls: 'reserve', buildings: 'Farm / Support' },
+];
+
+const ROLES = ['Tank 1','Tank 2','Tank 3','Healer 1','Healer 2','Healer 3','DPS','Farm/Support','Unassigned'];
+
+/* State: dispatches[0] and dispatches[1] */
+let dispatches = [
+  { g1: [], g2: [], g3: [], dps: [], reserve: [] },
+  { g1: [], g2: [], g3: [], dps: [], reserve: [] },
+];
+
+function blankPlayer() {
+  return { name: '', power: '', role: 'Unassigned' };
+}
+
+/* ── RENDER ── */
+function renderAll() {
+  renderRoster(0);
+  renderRoster(1);
+}
+
+function renderRoster(di) {
+  const container = document.getElementById('roster-' + di);
+  container.innerHTML = '';
+  GROUPS.forEach(g => {
+    const players = dispatches[di][g.id];
+    const card = document.createElement('div');
+    card.className = 'group-card';
+    card.innerHTML = `
+      <div class="group-card-header ${g.cls}">
+        <div>
+          <div class="group-card-name ${g.cls}">${g.label}</div>
+          <div class="group-buildings">${g.buildings}</div>
+        </div>
+        <button class="add-row-btn" onclick="addPlayer(${di},'${g.id}')">＋ Add Player</button>
+      </div>
+      <div class="player-table-wrap">
+        <table class="player-table">
+          <thead><tr>
+            <th>#</th><th>Player Name</th><th>Power (K)</th><th>Role</th><th></th>
+          </tr></thead>
+          <tbody id="tbody-${di}-${g.id}"></tbody>
+        </table>
+      </div>`;
+    container.appendChild(card);
+    renderTbody(di, g.id);
+  });
+}
+
+function renderTbody(di, gid) {
+  const tbody = document.getElementById('tbody-' + di + '-' + gid);
+  if (!tbody) return;
+  const players = dispatches[di][gid];
+  if (players.length === 0) {
+    tbody.innerHTML = `<tr><td colspan="5" style="color:var(--text-muted);font-style:italic;font-size:0.82rem;padding:12px;">No players assigned yet</td></tr>`;
+    return;
+  }
+  tbody.innerHTML = players.map((p, i) => {
+    const roleCls = getRoleCls(p.role);
+    return `<tr>
+      <td style="color:var(--text-muted);font-size:0.78rem;width:28px;">${i+1}</td>
+      <td class="player-name-cell">
+        <input type="text" value="${escAttr(p.name)}" placeholder="Player name"
+          oninput="dispatches[${di}]['${gid}'][${i}].name=this.value" />
+      </td>
+      <td class="player-power">
+        <input type="text" value="${escAttr(p.power)}" placeholder="e.g. 450"
+          style="width:70px;font-family:'Lato',sans-serif;font-size:0.8rem;"
+          oninput="dispatches[${di}]['${gid}'][${i}].power=this.value" />
+      </td>
+      <td>
+        <select onchange="dispatches[${di}]['${gid}'][${i}].role=this.value;rerenderBadge(this,${di},'${gid}',${i})">
+          ${ROLES.map(r => `<option value="${r}" ${r===p.role?'selected':''}>${r}</option>`).join('')}
+        </select>
+      </td>
+      <td><button class="remove-row-btn" onclick="removePlayer(${di},'${gid}',${i})">✕</button></td>
+    </tr>`;
+  }).join('');
+}
+
+function getRoleCls(role) {
+  if (!role) return 'reserve';
+  const r = role.toLowerCase();
+  if (r.startsWith('tank')) return 'tank';
+  if (r.startsWith('healer')) return 'healer';
+  if (r === 'dps') return 'dps';
+  return 'reserve';
+}
+
+function rerenderBadge(sel, di, gid, i) {
+  /* no-op — select already updated state, badge not shown in table */
+}
+
+function addPlayer(di, gid) {
+  dispatches[di][gid].push(blankPlayer());
+  renderTbody(di, gid);
+}
+
+function removePlayer(di, gid, i) {
+  dispatches[di][gid].splice(i, 1);
+  renderTbody(di, gid);
+}
+
+function clearRoster(di) {
+  if (!confirm('Clear all players from Dispatch ' + (di+1) + '?')) return;
+  dispatches[di] = { g1: [], g2: [], g3: [], dps: [], reserve: [] };
+  renderRoster(di);
+}
+
+/* ── TABS ── */
+function switchTab(idx) {
+  document.querySelectorAll('.dispatch-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.dispatch-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
+}
+
+/* ── EXCEL / CSV IMPORT ── */
+function handleFileUpload(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const ext = file.name.split('.').pop().toLowerCase();
+  const status = document.getElementById('uploadStatus');
+  status.className = 'upload-status';
+  status.textContent = 'Reading file…';
+
+  if (ext === 'csv') {
+    const reader = new FileReader();
+    reader.onload = e => parseCSV(e.target.result, status);
+    reader.readAsText(file);
+  } else if (ext === 'xlsx') {
+    /* Use SheetJS if available, else guide user */
+    if (typeof XLSX !== 'undefined') {
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const wb = XLSX.read(new Uint8Array(e.target.result), { type: 'array' });
+          const ws = wb.Sheets[wb.SheetNames[0]];
+          const csv = XLSX.utils.sheet_to_csv(ws);
+          parseCSV(csv, status);
+        } catch(err) {
+          status.className = 'upload-status error';
+          status.textContent = 'Error reading XLSX: ' + err.message;
+        }
+      };
+      reader.readAsArrayBuffer(file);
+    } else {
+      status.className = 'upload-status error';
+      status.textContent = 'For XLSX, please save as CSV first (File → Save As → CSV in Excel), then upload.';
+    }
+  }
+}
+
+function parseCSV(csv, status) {
+  try {
+    const lines = csv.split('\n').map(l => l.split(',').map(c => c.trim().replace(/^"|"$/g,'')));
+    /* Find header row — look for "Dispatch" */
+    let headerRow = -1;
+    for (let i = 0; i < lines.length; i++) {
+      if (lines[i].some(c => c.toLowerCase().includes('dispatch'))) { headerRow = i; break; }
+    }
+    if (headerRow === -1) { status.className='upload-status error'; status.textContent='Could not find header row with "Dispatch" column.'; return; }
+
+    /* Parse columns — expect: Nr, Name1, Power1, Role1, Name2, Power2, Role2 */
+    const d1 = { g1:[], g2:[], g3:[], dps:[], reserve:[] };
+    const d2 = { g1:[], g2:[], g3:[], dps:[], reserve:[] };
+    let currentSection = 'main'; /* 'main' or 'reserve' */
+
+    for (let i = headerRow + 1; i < lines.length; i++) {
+      const row = lines[i];
+      if (!row || row.length < 2) continue;
+      const first = (row[0]||'').toLowerCase();
+      if (first === 'reserve') { currentSection = 'reserve'; continue; }
+      const nr = row[0]; const n1 = row[1]; const p1 = row[2]; const r1 = row[3];
+      const n2 = row[4]; const p2 = row[5]; const r2 = row[6];
+      if (!n1 && !n2) continue;
+      if (n1) { const gid = currentSection==='reserve'?'reserve':inferGroup(r1); d1[gid].push({name:n1,power:p1||'',role:normalizeRole(r1)}); }
+      if (n2) { const gid = currentSection==='reserve'?'reserve':inferGroup(r2); d2[gid].push({name:n2,power:p2||'',role:normalizeRole(r2)}); }
+    }
+
+    dispatches[0] = d1;
+    dispatches[1] = d2;
+    renderAll();
+    status.className = 'upload-status success';
+    status.textContent = '✓ Roster imported! Review assignments below and adjust as needed.';
+  } catch(err) {
+    status.className = 'upload-status error';
+    status.textContent = 'Parse error: ' + err.message;
+  }
+}
+
+function inferGroup(role) {
+  if (!role) return 'g1';
+  const r = role.toLowerCase();
+  if (r === 'dps') return 'dps';
+  if (r.includes('farm') || r.includes('support')) return 'reserve';
+  /* Tanks and healers get spread — default to g1; leaders reassign */
+  return 'g1';
+}
+
+function normalizeRole(r) {
+  if (!r) return 'Unassigned';
+  const rl = r.trim().toLowerCase();
+  for (const role of ROLES) { if (role.toLowerCase() === rl) return role; }
+  if (rl.startsWith('tank')) return r.includes('1')?'Tank 1':r.includes('2')?'Tank 2':'Tank 3';
+  if (rl.startsWith('healer')) return r.includes('1')?'Healer 1':r.includes('2')?'Healer 2':'Healer 3';
+  if (rl === 'dps') return 'DPS';
+  if (rl.includes('farm') || rl.includes('support')) return 'Farm/Support';
+  return 'Unassigned';
+}
+
+/* ── DISCORD OUTPUT ── */
+let currentDiscordDi = 0;
+
+function openDiscordModal(di) {
+  currentDiscordDi = di;
+  const output = buildDiscordOutput(di);
+  document.getElementById('discordOutput').textContent = output;
+  document.getElementById('discordModal').classList.add('open');
+}
+
+function closeModal() {
+  document.getElementById('discordModal').classList.remove('open');
+}
+
+function buildDiscordOutput(di) {
+  const time = document.getElementById('time-' + di).value || '??:??';
+  const note = document.getElementById('note-' + di).value;
+  const label = 'DISPATCH ' + (di+1);
+  const d = dispatches[di];
+
+  let out = '';
+  out += '⚔️ ════════════════════════════ ⚔️\n';
+  out += '       SWORDLAND SHOWDOWN\n';
+  out += `       ${label}  —  ${time} UTC\n`;
+  out += '⚔️ ════════════════════════════ ⚔️\n';
+  if (note) out += `📝 ${note}\n`;
+  out += '\n';
+
+  const sections = [
+    { id:'g1', emoji:'🟡', label:'GROUP 1', sub:'Bell Tower · Top Abbey · Mercenary' },
+    { id:'g2', emoji:'🟢', label:'GROUP 2', sub:'Sanctum · Mid Abbey' },
+    { id:'g3', emoji:'🔵', label:'GROUP 3', sub:'Low Abbey · Reformation · Stables' },
+    { id:'dps', emoji:'🔴', label:'DPS', sub:'Roam Free — Do NOT Garrison' },
+    { id:'reserve', emoji:'⚪', label:'RESERVE', sub:'Farm / Support' },
+  ];
+
+  sections.forEach(s => {
+    const players = d[s.id];
+    if (!players || players.length === 0) return;
+    out += `${s.emoji} ${s.label}\n`;
+    out += `   📍 ${s.sub}\n`;
+    players.forEach((p, i) => {
+      if (!p.name) return;
+      const power = p.power ? ` (${p.power}K)` : '';
+      const role = p.role && p.role !== 'Unassigned' ? ` — ${p.role}` : '';
+      out += `   ${i+1}. ${p.name}${power}${role}\n`;
+    });
+    out += '\n';
+  });
+
+  out += '────────────────────────────────\n';
+  out += '⚔ TANK: Teleport → cap building → fight with healers\n';
+  out += '✚ HEALER: Garrison both buildings → reinforce → call DPS positions\n';
+  out += '🎯 DPS: Roam free → teleport where needed → attack weaker players\n';
+  out += '────────────────────────────────\n';
+  out += '🏖️ BBQ Beach Party — K#1620\n';
+
+  return out;
+}
+
+function copyDiscord() {
+  const text = document.getElementById('discordOutput').textContent;
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(text).then(() => showToast('✅ Copied to clipboard!'));
+  } else {
+    const ta = document.createElement('textarea');
+    ta.value = text; ta.style.position='fixed'; ta.style.opacity='0';
+    document.body.appendChild(ta); ta.select();
+    try { document.execCommand('copy'); showToast('✅ Copied!'); } catch(e) { showToast('⚠ Copy failed — select and copy manually'); }
+    document.body.removeChild(ta);
+  }
+}
+
+/* ── UTILS ── */
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2500);
+}
+
+function escAttr(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/"/g,'&quot;').replace(/</g,'&lt;');
+}
+
+/* ── INIT ── */
+renderAll();
+</script>
+</body>
+</html>
