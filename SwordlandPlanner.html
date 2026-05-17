@@ -205,10 +205,9 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
 
 /* ── TWO-COLUMN LAYOUT: Map + Roster ── */
 .planner-grid {
-  display: grid;
-  grid-template-columns: 340px 1fr;
+  display: flex;
+  flex-direction: column;
   gap: 20px;
-  align-items: start;
 }
 
 /* ── MAP PANEL ── */
@@ -217,8 +216,25 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
   border: 1px solid rgba(212,137,26,0.2);
   border-radius: 10px;
   overflow: hidden;
-  position: sticky;
-  top: 16px;
+}
+.map-panel-inner {
+  display: grid;
+  grid-template-columns: 1fr 220px;
+}
+.map-panel-inner .map-svg-wrap {
+  padding: 16px;
+  background: rgba(0,0,0,0.25);
+  border-right: 1px solid rgba(212,137,26,0.1);
+}
+.map-panel-inner .map-sidebar {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  max-height: 500px;
+}
+@media (max-width: 700px) {
+  .map-panel-inner { grid-template-columns: 1fr; }
+  .map-panel-inner .map-svg-wrap { border-right: none; border-bottom: 1px solid rgba(212,137,26,0.1); }
 }
 .map-panel-title {
   font-family: 'Cinzel', serif;
@@ -404,21 +420,29 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
 
 /* Add row button */
 .add-row-btn {
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 6px;
-  background: transparent;
+  background: var(--gold);
   border: none;
-  color: var(--text-muted);
+  border-radius: 6px;
+  color: var(--dark);
   cursor: pointer;
   font-family: 'Cinzel', serif;
-  font-size: 0.6rem;
-  letter-spacing: 0.1em;
-  padding: 8px 14px;
-  transition: color 0.2s;
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 7px 16px;
+  transition: all 0.2s;
   -webkit-appearance: none;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
-.add-row-btn:hover { color: var(--gold); }
+.add-row-btn:hover {
+  background: var(--gold-light);
+  transform: translateY(-1px);
+  box-shadow: 0 3px 10px rgba(212,137,26,0.35);
+}
 .remove-row-btn {
   background: transparent;
   border: none;
@@ -853,6 +877,41 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
     .how-to-divider { flex-basis: 100%; text-align: center; }
     .how-to-option { min-width: 100%; }
   }
+
+  /* ── ROLE GUIDE BAR ── */
+  .role-guide-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .role-guide-item {
+    background: var(--dark2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-top: 3px solid;
+  }
+  .role-guide-item.tank   { border-color: var(--tank-color);   }
+  .role-guide-item.healer { border-color: var(--healer-color); }
+  .role-guide-item.dps    { border-color: var(--dps-color);    }
+  .role-guide-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .role-guide-item.tank   .role-guide-title { color: var(--tank-color);   }
+  .role-guide-item.healer .role-guide-title { color: var(--healer-color); }
+  .role-guide-item.dps    .role-guide-title { color: var(--dps-color);    }
+  .role-guide-desc {
+    font-size: 0.83rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  @media (max-width: 700px) {
+    .role-guide-bar { grid-template-columns: 1fr; }
+  }
 </style>
 </head>
 <body>
@@ -1043,25 +1102,28 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#6495ed;"></div>Group 3 — Low Abbey, Reformation, Stables</div>
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#d4891a;"></div>Swordshrine — Contested Center</div>
         </div>
-            <div class="map-roles">
-          <div class="map-role-block">
-            <div class="map-role-title tank">⚔ TANKS</div>
-          </div>
-        </div>
-            <div class="map-role-desc">Teleport to assigned building(s). Get it first, go solo if needed. Attack enemies with your healers.</div>
-          </div>
-          <div class="map-role-block">
-            <div class="map-role-title healer">✚ HEALERS</div>
-            <div class="map-role-desc">Teleport to assigned building(s). Garrison in both if possible. Reinforce tank / each other. Call out enemy DPS positions.</div>
-          </div>
-          <div class="map-role-block">
-            <div class="map-role-title dps">🎯 DPS</div>
-            <div class="map-role-desc">Roam free — do NOT garrison. Teleport where help is needed. Attack players lower power. Burn enemies on our side.</div>
-          </div>
+            </div>
         </div>
       </div>
 
       <!-- ROSTER CARDS -->
+
+      <!-- ROLE GUIDE — full width -->
+      <div class="role-guide-bar">
+        <div class="role-guide-item tank">
+          <div class="role-guide-title">⚔ TANKS</div>
+          <div class="role-guide-desc">Teleport to assigned building(s). Cap it first — go solo if needed. Attack enemies alongside your healers.</div>
+        </div>
+        <div class="role-guide-item healer">
+          <div class="role-guide-title">✚ HEALERS</div>
+          <div class="role-guide-desc">Teleport to assigned building(s). Garrison in both if possible. Reinforce your tank and each other. Call out enemy DPS positions in chat.</div>
+        </div>
+        <div class="role-guide-item dps">
+          <div class="role-guide-title">🎯 DPS</div>
+          <div class="role-guide-desc">Roam free — do NOT garrison. Teleport wherever help is needed. Attack players lower power than you. Burn enemies on our side of the map.</div>
+        </div>
+      </div>
+
       <div class="roster-panel" id="roster-0">
         <!-- Rendered by JS -->
       </div>
@@ -1217,23 +1279,26 @@ main { max-width: 1400px; margin: 0 auto; padding: 28px 20px 60px; }
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#6495ed;"></div>Group 3 — Low Abbey, Reformation, Stables</div>
           <div class="map-legend-item"><div class="map-legend-dot" style="background:#d4891a;"></div>Swordshrine — Contested Center</div>
         </div>
-            <div class="map-roles">
-          <div class="map-role-block">
-            <div class="map-role-title tank">⚔ TANKS</div>
-          </div>
-        </div>
-            <div class="map-role-desc">Teleport to assigned building(s). Get it first, go solo if needed. Attack enemies with your healers.</div>
-          </div>
-          <div class="map-role-block">
-            <div class="map-role-title healer">✚ HEALERS</div>
-            <div class="map-role-desc">Teleport to assigned building(s). Garrison in both if possible. Reinforce tank / each other. Call out enemy DPS positions.</div>
-          </div>
-          <div class="map-role-block">
-            <div class="map-role-title dps">🎯 DPS</div>
-            <div class="map-role-desc">Roam free — do NOT garrison. Teleport where help is needed. Attack players lower power. Burn enemies on our side.</div>
-          </div>
+            </div>
         </div>
       </div>
+
+      <!-- ROLE GUIDE — full width -->
+      <div class="role-guide-bar">
+        <div class="role-guide-item tank">
+          <div class="role-guide-title">⚔ TANKS</div>
+          <div class="role-guide-desc">Teleport to assigned building(s). Cap it first — go solo if needed. Attack enemies alongside your healers.</div>
+        </div>
+        <div class="role-guide-item healer">
+          <div class="role-guide-title">✚ HEALERS</div>
+          <div class="role-guide-desc">Teleport to assigned building(s). Garrison in both if possible. Reinforce your tank and each other. Call out enemy DPS positions in chat.</div>
+        </div>
+        <div class="role-guide-item dps">
+          <div class="role-guide-title">🎯 DPS</div>
+          <div class="role-guide-desc">Roam free — do NOT garrison. Teleport wherever help is needed. Attack players lower power than you. Burn enemies on our side of the map.</div>
+        </div>
+      </div>
+
       <div class="roster-panel" id="roster-1"></div>
     </div>
     <div class="action-bar">
@@ -2048,6 +2113,41 @@ function buildExportHTML(plan) {
   @media (max-width: 700px) {
     .how-to-divider { flex-basis: 100%; text-align: center; }
     .how-to-option { min-width: 100%; }
+  }
+
+  /* ── ROLE GUIDE BAR ── */
+  .role-guide-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 12px;
+  }
+  .role-guide-item {
+    background: var(--dark2);
+    border-radius: 8px;
+    padding: 14px 16px;
+    border-top: 3px solid;
+  }
+  .role-guide-item.tank   { border-color: var(--tank-color);   }
+  .role-guide-item.healer { border-color: var(--healer-color); }
+  .role-guide-item.dps    { border-color: var(--dps-color);    }
+  .role-guide-title {
+    font-family: 'Cinzel', serif;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  .role-guide-item.tank   .role-guide-title { color: var(--tank-color);   }
+  .role-guide-item.healer .role-guide-title { color: var(--healer-color); }
+  .role-guide-item.dps    .role-guide-title { color: var(--dps-color);    }
+  .role-guide-desc {
+    font-size: 0.83rem;
+    color: var(--text-dim);
+    line-height: 1.5;
+  }
+  @media (max-width: 700px) {
+    .role-guide-bar { grid-template-columns: 1fr; }
   }
 </style>
 </head>
